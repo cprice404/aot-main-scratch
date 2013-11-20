@@ -1,6 +1,13 @@
 This is an example that demonstrates some things about how clojure AOT
 compiling works.
 
+-------------------------------------------------------------------
+Initial commit
+-------------------------------------------------------------------
+(NOTE that the instructions below only apply to the initial commit;
+ the second commit updates the project to get rid of the unnecessary
+ aot; see additional notes below.)
+
 The basic problem is that you *must* specify a :main namespace in your
 leinengen project file if you want your uberjar to be runnable via
 `java -jar`, and you also *must* do a `gen-class` in the :main namespace
@@ -22,3 +29,14 @@ To see this in action, run `lein uberjar` on this project, and then
 check out the contents of the uberjar.  You'll notice that the
 `real-main` namespace is compiled to a .class file.  This is what
 we're trying to avoid.
+
+--------------------------------------------------------------------
+UPDATE: after second commit
+--------------------------------------------------------------------
+
+After changing the aot-main namespace to not `require` the `real-main`
+namespace, and instead resolve it dynamically, we end up with the
+same exact application but without having aot-compiled the `real-main`
+namespace.  If you run `lein uberjar` now, and examine the contents,
+you'll notice that the `real_main.clj` file is in the jar but there
+is no pre-compiled version of it.
